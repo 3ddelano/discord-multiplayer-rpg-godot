@@ -1,18 +1,17 @@
 extends KinematicBody2D
 
-# https://opengameart.org/content/alternate-lpc-character-sprites-george
 var player_data = {
-	"tag": "Anonymous#0000"
+	"tag": "Anonymous#0000",
+	"char": "male1"
 }
-var dir := "down"
 
+var dir := "down"
 var _move_sprites = {
 	"down": 0,
 	"left": 1,
 	"up": 2,
 	"right": 3,
 }
-
 var _ray_rotation = {
 	"down": 0,
 	"left": -270,
@@ -20,8 +19,8 @@ var _ray_rotation = {
 	"right": -90,
 }
 
-
 func _ready() -> void:
+	_update_sprite()
 	# Set the initial look to down
 	_update_look_dir(dir)
 
@@ -35,16 +34,13 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_pressed("move_right"):
 		make_move("right")
 
-	if event is InputEventMouseButton:
-		if event.pressed and event.button_index == BUTTON_LEFT:
-			print("player left clicked")
-			$Viewport.take_screenshot()
-
 func _update_look_dir(look_dir: String) -> void:
 	$Sprite.frame = _move_sprites[look_dir]
 	$RayCast2D.rotation_degrees = _ray_rotation[look_dir]
 
-# warning-ignore:shadowed_variable
+func _update_sprite():
+	$Sprite.texture = Globals.player_sprites[player_data.char]
+
 func make_move(dir: String) -> void:
 	_update_look_dir(dir)
 
@@ -62,3 +58,4 @@ func set_player_data(new_player_data: Dictionary):
 
 func _update():
 	$Viewport/NameValue.text = str(player_data.tag)
+	_update_sprite()

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/george.png-43d888efb56e9d5d24edce86005dac19.stex"
+path="res://.import/ada_0_0_0.png-2f6d59d910e0ccdb1491c984a92e6356.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/george.png"
-dest_files=[ "res://.import/george.png-43d888efb56e9d5d24edce86005dac19.stex" ]
+source_file="res://assets/character/ada_0_0_0.png"
+dest_files=[ "res://.import/ada_0_0_0.png-2f6d59d910e0ccdb1491c984a92e6356.stex" ]
 
 [params]
 
@@ -28,7 +28,6 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
-process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=false

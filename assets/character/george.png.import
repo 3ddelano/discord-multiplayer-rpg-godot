@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/pipo-map001.png-fad3024e59cd4bc10331963eae05a572.stex"
+path="res://.import/george.png-e4e6cab28612f382f28ce5a52ff134fa.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tileset/pipo-map001.png"
-dest_files=[ "res://.import/pipo-map001.png-fad3024e59cd4bc10331963eae05a572.stex" ]
+source_file="res://assets/character/george.png"
+dest_files=[ "res://.import/george.png-e4e6cab28612f382f28ce5a52ff134fa.stex" ]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=1
+flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false

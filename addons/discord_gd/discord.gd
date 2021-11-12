@@ -991,6 +991,8 @@ func _update_presence(new_presence: Dictionary) -> void:
 # Helper functions
 func _jsonstring_to_dict(data: String) -> Dictionary:
 	var json_parsed = JSON.parse(data)
+	if json_parsed.error != OK:
+		return {}
 	return json_parsed.result
 
 
