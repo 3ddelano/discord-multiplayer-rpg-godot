@@ -6,6 +6,9 @@ icon.png.import
 export.cfg
 export_presets.cfg
 
+# Game save files
+saves/
+
 # Imported translations (automatically generated from CSV files)
 *.translation
 

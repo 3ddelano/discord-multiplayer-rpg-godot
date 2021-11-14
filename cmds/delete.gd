@@ -16,7 +16,7 @@ func on_message(world, bot: DiscordBot, message: Message, channel: Dictionary, a
 	var uid = message.author.id
 	var tag = message.author.username + "#" + message.author.discriminator
 
-	var player_data = Data.get_player_data(uid)
+	var player_data = PlayersData.get_player_data(uid)
 	if not player_data:
 		bot.reply(message, "You do not have any character to delete.")
 		return
@@ -49,7 +49,7 @@ func on_interaction_create(world, bot: DiscordBot, interaction: DiscordInteracti
 		return
 
 	if custom_id == "delete_yes":
-		Data.save_player_data(data.author_id, null)
+		PlayersData.save_player_data(data.author_id, null)
 		# Check if user is playing a game, if yes then stop it
 		if data.author_id in world.current_players:
 			for game_msg_id in world.interactions:

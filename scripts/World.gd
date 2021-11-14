@@ -7,10 +7,11 @@ onready var player_scene = preload("res://scenes/Player.tscn")
 export (NodePath) var players_path
 export (NodePath) var spawn_point_path
 export (NodePath) var discord_bot_path
+export (NodePath) var screenshotter_path
 onready var players_node = get_node(players_path)
 onready var spawn_point = get_node(spawn_point_path)
 onready var discord_bot = get_node(discord_bot_path)
-
+onready var screenshotter = get_node(screenshotter_path)
 
 var cmds = {}
 var cmd_aliases = {}
@@ -23,6 +24,9 @@ var wait_times = {
 	"confirm_delete": 60,
 	"setup_char": 60,
 }
+
+func take_screenshot(scene) -> PoolByteArray:
+	return yield(screenshotter.take_screenshot(scene), "completed")
 
 func _ready() -> void:
 	var file = File.new()
@@ -38,7 +42,7 @@ func _ready() -> void:
 	bot.login()
 
 	$InteractionClock.connect("timeout", self, "_on_interaction_clock")
-
+	$SaveClock.connect("timeout", self, "_on_save_clock")
 	_load_commands(bot)
 
 func _on_bot_ready(bot: DiscordBot) -> void:
@@ -58,12 +62,11 @@ func _load_commands(bot: DiscordBot) -> void:
 		return
 
 	dir.list_dir_begin()
-
 	while true:
 		var file = dir.get_next()
 		if file == "": # End of files
 			break
-		elif not file.begins_with("."): # Checks for . and ..
+		elif not file.begins_with(".") and file.ends_with(".gd"): # Checks for . and ..
 			var script = load("res://cmds/" + file).new()
 			var meta = script.help
 
@@ -96,17 +99,31 @@ func _on_message_create(bot: DiscordBot, message: Message, channel: Dictionary) 
 	r.compile("\\S+") # Negated whitespace character class
 	for token in r.search_all(raw_content):
 		tokens.append(token.get_string())
-	var cmd = tokens[0].to_lower()
+	var cmd_or_alias = tokens[0].to_lower()
 	tokens.remove(0) # Remove the command name from the tokens
 	var args = tokens
-	_handle_command(bot, message, channel, cmd, args)
+	_handle_command(bot, message, channel, cmd_or_alias, args)
 
-func _handle_command(bot: DiscordBot, message: Message, channel: Dictionary, cmd: String, args: Array):
+func _handle_command(bot: DiscordBot, message: Message, channel: Dictionary, cmd_or_alias: String, args: Array):
 	var uid = message.author.id
 	var tag = message.author.username + "#" + message.author.discriminator
 
-	if cmds.has(cmd):
-		cmds[cmd].on_message(self, bot, message, channel, args)
+	var cmd = null
+	if cmds.has(cmd_or_alias):
+		cmd = cmds[cmd_or_alias]
+	elif cmd_aliases.has(cmd_or_alias):
+		cmd = cmds[cmd_aliases[cmd_or_alias]]
+
+	if not cmd:
+		return
+
+	# Increment user xp by a little
+	var player_data = PlayersData.get_player_data(uid)
+	if player_data:
+		PlayersData.increase_user_xp(bot, message, uid, 5)
+
+	print("CMD: " + cmd.help.name + " by " + tag + " (" + uid + ")")
+	cmd.on_message(self, bot, message, channel, args)
 
 func remove_buttons_from_interaction(interaction: DiscordInteraction, msg = ":robot: Buttons have timed out") -> void:
 	var embed = Embed.new().set_description(msg)
@@ -148,12 +165,15 @@ func _on_interaction_clock():
 				_setup_char_timeout(msg_id)
 				continue
 
+func _on_save_clock():
+	PlayersData.save_players_data()
+
 func games_timeout(msg_id) -> void:
 	var data = interactions[msg_id]
 	var uid = data.author_id
 
 	# Remove the buttons
-	var res = yield(discord_bot._send_request(data.edit_slug, {
+	yield(discord_bot._send_request(data.edit_slug, {
 		"components": []
 	}, HTTPClient.METHOD_PATCH), "completed")
 	var player_node = players_node.get_node(uid)

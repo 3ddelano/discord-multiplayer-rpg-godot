@@ -21,32 +21,37 @@ var player_sprites = {
 
 var screenshot_threads = []
 
-func take_screenshot(viewport: Viewport, view_rect := Rect2()) -> void:
-	var start_epoch = OS.get_ticks_msec()
-	yield(VisualServer, "frame_post_draw")
-	var image: Image = viewport.get_texture().get_data()
-	image.flip_y()
+#func take_screenshot(viewport: Viewport, view_rect := Rect2()) -> void:
+#	var start_epoch = OS.get_ticks_msec()
+#	yield(VisualServer, "frame_post_draw")
+#	var image: Image = viewport.get_texture().get_data()
+#	image.flip_y()
+#
+#	if view_rect:
+#		image = image.get_rect(view_rect)
+#
+#	image.save_png("res://screenshot.png")
+#	print("\nSaved screenshot took " + str(OS.get_ticks_msec() - start_epoch) + "ms")
 
-	if view_rect:
-		image = image.get_rect(view_rect)
+#func _exit_tree() -> void:
+#	for thread in screenshot_threads:
+#		thread.wait_to_finish()
 
-	image.save_png("res://screenshot.png")
-	print("\nSaved screenshot took " + str(OS.get_ticks_msec() - start_epoch) + "ms")
-
-func _exit_tree() -> void:
-	for thread in screenshot_threads:
-		thread.wait_to_finish()
-
-static func merge_dir(target, patch):
+static func merge_dict(target, patch) -> Dictionary:
+	var ret = target.duplicate(true)
 	for key in patch:
 		if target.has(key):
-			var tv = target[key]
-			if typeof(tv) == TYPE_DICTIONARY:
-				merge_dir(tv, patch[key])
-			else:
-				target[key] = patch[key]
-		else:
-			target[key] = patch[key]
+			ret[key] = patch[key]
+	return ret
+
+# Return those key,value pairs from first that are not there in second
+static func diff_dict(first, second) -> Dictionary:
+	var ret = {}
+	for key in first:
+		if second.has(key) and first[key] == second[key]:
+			continue
+		ret[key] = first[key]
+	return ret
 
 static func millis_to_string(millis: int) -> String:
 	var days = -1

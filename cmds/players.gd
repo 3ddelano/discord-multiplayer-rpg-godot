@@ -1,8 +1,6 @@
 extends Command
 
 func on_message(world, bot: DiscordBot, message: Message, channel: Dictionary, args: Array) -> void:
-	var uid = message.author.id
-
 	var players = []
 	for game in world.interactions.values():
 		if game.type == "games":

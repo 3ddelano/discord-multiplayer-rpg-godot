@@ -1,0 +1,174 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/character/george.png" type="Texture" id=1]
+[ext_resource path="res://assets/fonts/montserrat-14r.tres" type="DynamicFont" id=2]
+[ext_resource path="res://assets/custom_theme.tres" type="Theme" id=3]
+[ext_resource path="res://scripts/ProfileCard.gd" type="Script" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.211765, 0.223529, 0.247059, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.94902, 0.698039, 0.0627451, 1 )
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+corner_detail = 20
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxLine" id=4]
+color = Color( 0.94902, 0.698039, 0.0627451, 1 )
+
+[node name="ProfileCard" type="PanelContainer"]
+margin_right = 200.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 200, 80 )
+theme = ExtResource( 3 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bg" type="Panel" parent="."]
+margin_right = 262.0
+margin_bottom = 113.0
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MC" type="MarginContainer" parent="."]
+margin_right = 262.0
+margin_bottom = 113.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HB" type="HBoxContainer" parent="MC"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 246.0
+margin_bottom = 109.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CC" type="CenterContainer" parent="MC/HB"]
+margin_right = 43.0
+margin_bottom = 105.0
+
+[node name="MC" type="MarginContainer" parent="MC/HB/CC"]
+margin_top = 34.0
+margin_right = 43.0
+margin_bottom = 71.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 2
+custom_constants/margin_left = 4
+
+[node name="Char" type="Panel" parent="MC/HB/CC/MC"]
+margin_left = 4.0
+margin_right = 41.0
+margin_bottom = 37.0
+rect_min_size = Vector2( 37, 37 )
+custom_styles/panel = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="MC/HB/CC/MC"]
+position = Vector2( -3, -8 )
+texture = ExtResource( 1 )
+centered = false
+hframes = 4
+vframes = 4
+
+[node name="MC" type="MarginContainer" parent="MC/HB"]
+margin_left = 47.0
+margin_right = 242.0
+margin_bottom = 105.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VB" type="VBoxContainer" parent="MC/HB/MC"]
+margin_right = 195.0
+margin_bottom = 105.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 8
+
+[node name="VB" type="VBoxContainer" parent="MC/HB/MC/VB"]
+margin_right = 195.0
+margin_bottom = 26.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="NameValue" type="Label" parent="MC/HB/MC/VB/VB"]
+margin_right = 195.0
+margin_bottom = 21.0
+rect_clip_content = true
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "TheAwesomeTech#6391"
+max_lines_visible = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="MC/HB/MC/VB/VB"]
+margin_top = 25.0
+margin_right = 195.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 0, 1 )
+custom_styles/panel = SubResource( 4 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MC/HB/MC/VB"]
+margin_top = 34.0
+margin_right = 195.0
+margin_bottom = 55.0
+
+[node name="MoneyText" type="Label" parent="MC/HB/MC/VB/HBoxContainer"]
+margin_right = 60.0
+margin_bottom = 21.0
+size_flags_vertical = 1
+text = "Wallet  "
+
+[node name="MoneyValue" type="Label" parent="MC/HB/MC/VB/HBoxContainer"]
+margin_left = 64.0
+margin_right = 106.0
+margin_bottom = 21.0
+text = "$ 100"
+
+[node name="HSeparator" type="HSeparator" parent="MC/HB/MC/VB"]
+margin_top = 63.0
+margin_right = 195.0
+margin_bottom = 67.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LevelProgress" type="ProgressBar" parent="MC/HB/MC/VB"]
+margin_top = 75.0
+margin_right = 195.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 0, 4 )
+value = 75.0
+percent_visible = false
+
+[node name="LevelValue" type="Label" parent="MC/HB/MC/VB"]
+margin_top = 87.0
+margin_right = 195.0
+margin_bottom = 105.0
+custom_fonts/font = ExtResource( 2 )
+text = "Level 1 (15 / 15)"

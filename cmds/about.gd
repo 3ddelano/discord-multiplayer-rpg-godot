@@ -17,7 +17,7 @@ func on_message(world, bot: DiscordBot, message: Message, channel: Dictionary, a
 	})
 
 func get_usage(p: String) -> String:
-	return "%sabout" % p
+	return "`%sabout`" % p
 
 var help = {
 	"name": "about",

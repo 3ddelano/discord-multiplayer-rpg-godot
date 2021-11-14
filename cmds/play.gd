@@ -35,7 +35,7 @@ func on_message(world, bot: DiscordBot, message: Message, channel: Dictionary, a
 	player.name = uid
 
 	# Load previous data if not ask to make a new character
-	var player_data = Data.get_player_data(uid)
+	var player_data = PlayersData.get_player_data(uid)
 	if not player_data:
 		bot.reply(message, "You have not setup your character. Use `.setup` to setup.")
 		return
@@ -114,7 +114,7 @@ func _get_player_image_bytes(world, player_id_or_node) -> PoolByteArray:
 	var view_rect := Rect2(player.get_global_transform_with_canvas().origin - Globals.half_view_size, Globals.half_view_size * 2)
 
 	yield(VisualServer, "frame_post_draw")
-	var image: Image = world.get_viewport().get_texture().get_data()
+	var image: Image = world.get_node("Views/VC/GameViewport").get_texture().get_data()
 	image.flip_y()
 	image = image.get_rect(view_rect)
 	return image.save_png_to_buffer()

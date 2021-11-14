@@ -1,7 +1,6 @@
 extends KinematicBody2D
 
 var player_data = {
-	"tag": "Anonymous#0000",
 	"char": "male1"
 }
 
@@ -53,7 +52,7 @@ func make_move(dir: String) -> void:
 	global_translate(move_dir)
 
 func set_player_data(new_player_data: Dictionary):
-	Globals.merge_dir(player_data, new_player_data)
+	player_data = new_player_data
 	_update()
 
 func _update():

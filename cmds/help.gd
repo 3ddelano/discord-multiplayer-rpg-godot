@@ -45,7 +45,6 @@ func on_message(world, bot: DiscordBot, message: Message, channel: Dictionary, a
 
 	sorted.sort_custom(CommandSorter, "sort_ascending")
 
-	var current_category = ""
 	var category_cmds = {}
 	for cmd in sorted:
 		if not category_cmds.has(cmd.category):

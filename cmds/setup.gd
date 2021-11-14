@@ -15,7 +15,7 @@ func on_message(world, bot: DiscordBot, message: Message, channel: Dictionary, a
 	var uid = message.author.id
 	var tag = message.author.username + "#" + message.author.discriminator
 
-	var player_data = Data.get_player_data(uid)
+	var player_data = PlayersData.get_player_data(uid)
 	if player_data:
 		bot.reply(message, "You have already setup your character.")
 		return
@@ -58,20 +58,17 @@ func on_interaction_create(world, bot: DiscordBot, interaction: DiscordInteracti
 			"components": []
 		}, HTTPClient.METHOD_PATCH)
 		world.interactions[msg_id].last_time = OS.get_ticks_msec()
-		var player_data = Data.default_player_data.duplicate(true)
+		var player_data = PlayersData.default_player_data.duplicate(true)
 		var count = 0
 		for sprite_name in Globals.player_sprites.keys():
 			if count == data.page_idx:
 				player_data.char = sprite_name
 			count += 1
 		# Save the character index, obtained from the data.page_idx to the player_data
-		Data.save_player_data(world.interactions[msg_id].author_id, player_data)
+		PlayersData.save_player_data(world.interactions[msg_id].author_id, player_data)
 		interaction.reply({
 			"content": "Your character was created successfully."
 		})
-	else:
-		return
-
 
 func make_character_message(data: Dictionary) -> Dictionary:
 	var random_file_name = str(randi() % 4096)
