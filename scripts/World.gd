@@ -17,6 +17,7 @@ var cmds = {}
 var cmd_aliases = {}
 var current_players = []
 var interactions = {}
+var interaction_mutex = Mutex.new()
 
 # Specifies the wait_time for the cached interaction before the buttons are removed
 var wait_times = {
@@ -29,12 +30,17 @@ func take_screenshot(scene) -> PoolByteArray:
 	return yield(screenshotter.take_screenshot(scene), "completed")
 
 func _ready() -> void:
-	var file = File.new()
-	file.open("res://token.secret", File.READ)
-	var token = file.get_as_text()
-	file.close()
+	#var file = File.new()
+	#file.open("res://token.secret", File.READ)
+	#var token = file.get_as_text()
+	#file.close()
 
 	var bot = $DiscordBot
+	var token = AppData.app_data.token
+	if token == "":
+		print("INVALID TOKEN: Update the bot token")
+		return
+
 	bot.TOKEN = token
 	bot.connect("bot_ready", self, "_on_bot_ready")
 	bot.connect("message_create", self, "_on_message_create")
@@ -177,7 +183,8 @@ func games_timeout(msg_id) -> void:
 		"components": []
 	}, HTTPClient.METHOD_PATCH), "completed")
 	var player_node = players_node.get_node(uid)
-	player_node.queue_free() # Delete the player node
+	if players_node and players_node.has_method("queue_free"):
+		player_node.queue_free() # Delete the player node
 	current_players.erase(uid) # Update the active users
 	print("Player Disconnected: " + data.author_tag)
 	interactions.erase(msg_id)

@@ -9,12 +9,14 @@ func on_message(world, bot: DiscordBot, message: Message, channel: Dictionary, a
 		return
 
 	# Find the game which the user is playing and remove it
+
 	for msg_id in world.interactions.keys():
 		var game_data = world.interactions[msg_id]
 		if game_data.author_id == uid:
 			world.games_timeout(msg_id)
 			bot.reply(message, "Your game was stopped.")
 			break
+
 
 func get_usage(p: String) -> String:
 	return "`%sstop`" % p

@@ -1,0 +1,82 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/AdminSidebar.gd" type="Script" id=1]
+[ext_resource path="res://assets/custom_theme.tres" type="Theme" id=2]
+[ext_resource path="res://assets/fonts/montserrat-14r.tres" type="DynamicFont" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.75 )
+corner_radius_top_left = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxLine" id=2]
+content_margin_bottom = 16.0
+color = Color( 1, 1, 1, 1 )
+
+[node name="AdminSidebar" type="PanelContainer"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -194.0
+size_flags_vertical = 3
+theme = ExtResource( 2 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MC" type="MarginContainer" parent="."]
+margin_right = 194.0
+margin_bottom = 512.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 16
+
+[node name="VB" type="VBoxContainer" parent="MC"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 178.0
+margin_bottom = 496.0
+
+[node name="GameName" type="Label" parent="MC/VB"]
+margin_right = 162.0
+margin_bottom = 21.0
+text = "Delano's RPG"
+
+[node name="HS" type="HSeparator" parent="MC/VB"]
+margin_top = 25.0
+margin_right = 162.0
+margin_bottom = 41.0
+custom_styles/separator = SubResource( 2 )
+custom_constants/separation = 16
+
+[node name="SetTokenButton" type="Button" parent="MC/VB"]
+margin_top = 45.0
+margin_right = 162.0
+margin_bottom = 72.0
+text = "Set bot token"
+
+[node name="HS2" type="HSeparator" parent="MC/VB"]
+margin_top = 76.0
+margin_right = 162.0
+margin_bottom = 433.0
+size_flags_vertical = 3
+
+[node name="HelpText" type="Label" parent="MC/VB"]
+margin_top = 437.0
+margin_right = 162.0
+margin_bottom = 455.0
+custom_fonts/font = ExtResource( 3 )
+text = "Press W to toggle"
+
+[node name="Credits" type="Label" parent="MC/VB"]
+margin_top = 459.0
+margin_right = 162.0
+margin_bottom = 480.0
+text = "By Delano Lourenco"
+
+[node name="Tween" type="Tween" parent="."]

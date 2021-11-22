@@ -113,6 +113,7 @@ func _get_player_image_bytes(world, player_id_or_node) -> PoolByteArray:
 
 	var view_rect := Rect2(player.get_global_transform_with_canvas().origin - Globals.half_view_size, Globals.half_view_size * 2)
 
+	yield(world.get_tree(), "idle_frame")
 	yield(VisualServer, "frame_post_draw")
 	var image: Image = world.get_node("Views/VC/GameViewport").get_texture().get_data()
 	image.flip_y()

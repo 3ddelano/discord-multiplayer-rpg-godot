@@ -36,15 +36,11 @@ Getting Started
 
 1. Clone or download this repo.
 
-2. Rename the file `token-example.secret` to `token.secret`.
+2. Import `project.godot` from Godot's Project Manager.
 
-3. Open the file `token.secret`, remove the string which is present and instead paste your Discord Bot token in it and save the file.
+3. Run the `World.tscn` scene and then click the button that says `Set Bot Token`.
 
-3. Open `project.godot` with Godot.
-
-4. Run the `World.tscn` scene.
-
-5. Now after inviting your bot to some server, you can run the command `.help` to get a list of commands available or run the command `.play` to start the game.
+4. Now after inviting your bot to some server, you can run the command `.help` to get a list of commands available or run the command `.play` to start the game.
 
 Screenshots (Subject to changes)
 ----------

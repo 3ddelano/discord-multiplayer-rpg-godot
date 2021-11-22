@@ -1,16 +1,16 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/tileset/middle.tres" type="TileSet" id=1]
 [ext_resource path="res://scripts/World.gd" type="Script" id=2]
 [ext_resource path="res://assets/tileset/background.tres" type="TileSet" id=3]
 [ext_resource path="res://addons/discord_gd/discord.gd" type="Script" id=4]
 [ext_resource path="res://scripts/Screenshotter.gd" type="Script" id=5]
-[ext_resource path="res://scripts/AdminSidebar.gd" type="Script" id=6]
-
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 0.75 )
-corner_radius_top_left = 24
-corner_radius_bottom_left = 24
+[ext_resource path="res://assets/fonts/montserrat-14r.tres" type="DynamicFont" id=6]
+[ext_resource path="res://assets/custom_theme.tres" type="Theme" id=7]
+[ext_resource path="res://scenes/AdminSidebar.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scripts/SetTokenWindow.gd" type="Script" id=9]
+[ext_resource path="res://assets/icons/close_btn.png" type="Texture" id=10]
+[ext_resource path="res://scripts/AdminViewport.gd" type="Script" id=11]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 2 )
@@ -32,13 +32,14 @@ position = Vector2( 128, 128 )
 [node name="Views" type="CanvasLayer" parent="."]
 
 [node name="VC" type="ViewportContainer" parent="Views"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 768.0
+margin_bottom = 512.0
 rect_min_size = Vector2( 768, 512 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -87,48 +88,97 @@ __meta__ = {
 }
 
 [node name="AdminViewport" type="Viewport" parent="Views/VC2"]
-size = Vector2( 768, 512 )
+size = Vector2( 384, 384 )
 size_override_stretch = true
 transparent_bg = true
 handle_input_locally = false
 disable_3d = true
 usage = 0
 render_target_update_mode = 3
+script = ExtResource( 11 )
 
-[node name="AdminSidebar" type="PanelContainer" parent="Views/VC2/AdminViewport"]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -152.0
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 1 )
-script = ExtResource( 6 )
+[node name="AdminSidebar" parent="Views/VC2/AdminViewport" instance=ExtResource( 8 )]
+
+[node name="SetTokenWindow" type="PanelContainer" parent="Views/VC2/AdminViewport"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -150.0
+margin_top = -50.0
+margin_right = 150.0
+margin_bottom = 89.0
+rect_min_size = Vector2( 300, 80 )
+theme = ExtResource( 7 )
+script = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MC" type="MarginContainer" parent="Views/VC2/AdminViewport/AdminSidebar"]
-margin_right = 152.0
-margin_bottom = 512.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[node name="VB" type="VBoxContainer" parent="Views/VC2/AdminViewport/SetTokenWindow"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 293.0
+margin_bottom = 132.0
+
+[node name="CloseBtn" type="TextureButton" parent="Views/VC2/AdminViewport/SetTokenWindow/VB"]
+margin_left = 261.0
+margin_right = 286.0
+margin_bottom = 25.0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 10
+texture_normal = ExtResource( 10 )
+texture_pressed = ExtResource( 10 )
+
+[node name="MC" type="MarginContainer" parent="Views/VC2/AdminViewport/SetTokenWindow/VB"]
+margin_top = 29.0
+margin_right = 286.0
+margin_bottom = 125.0
+mouse_filter = 1
 custom_constants/margin_right = 16
-custom_constants/margin_top = 16
 custom_constants/margin_left = 16
-custom_constants/margin_bottom = 16
+custom_constants/margin_bottom = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="VB" type="VBoxContainer" parent="Views/VC2/AdminViewport/AdminSidebar/MC"]
+[node name="VB" type="VBoxContainer" parent="Views/VC2/AdminViewport/SetTokenWindow/VB/MC"]
 margin_left = 16.0
-margin_top = 16.0
-margin_right = 136.0
-margin_bottom = 496.0
+margin_right = 270.0
+margin_bottom = 92.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Label" type="Label" parent="Views/VC2/AdminViewport/AdminSidebar/MC/VB"]
-margin_right = 120.0
-margin_bottom = 14.0
-text = "hey main whats up"
+[node name="Label" type="Label" parent="Views/VC2/AdminViewport/SetTokenWindow/VB/MC/VB"]
+margin_right = 254.0
+margin_bottom = 21.0
+text = "Bot token"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Tween" type="Tween" parent="Views/VC2/AdminViewport/AdminSidebar"]
+[node name="TokenValue" type="TextEdit" parent="Views/VC2/AdminViewport/SetTokenWindow/VB/MC/VB"]
+margin_top = 25.0
+margin_right = 254.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 150, 28 )
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 6 )
+text = "Enter token here"
+
+[node name="HSeparator" type="HSeparator" parent="Views/VC2/AdminViewport/SetTokenWindow/VB/MC/VB"]
+margin_top = 57.0
+margin_right = 254.0
+margin_bottom = 61.0
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="Views/VC2/AdminViewport/SetTokenWindow/VB/MC/VB"]
+margin_top = 65.0
+margin_right = 254.0
+margin_bottom = 92.0
+text = "Set Token"
 
 [node name="DiscordBot" type="HTTPRequest" parent="."]
 script = ExtResource( 4 )

@@ -4,7 +4,7 @@ const base_xp = 50
 const ratio = 1.1
 
 var players_data = {}
-var PLAYERS_SAVE_FILE = "res://saves/players.save"
+var SAVE_PATH = "user://saves/players.save"
 const default_player_data = {
 	#"tag": "inserted in runtime",
 	"char": "male1",
@@ -15,11 +15,11 @@ const default_player_data = {
 
 func load_players_data():
 	var file = File.new()
-	if not file.file_exists(PLAYERS_SAVE_FILE):
+	if not file.file_exists(SAVE_PATH):
 		players_data = {}
 		return
 
-	file.open(PLAYERS_SAVE_FILE, File.READ)
+	file.open(SAVE_PATH, File.READ)
 	players_data = file.get_var()
 	print("Loaded " + str(players_data.size()) + " players")
 
@@ -31,7 +31,7 @@ func load_players_data():
 
 func save_players_data():
 	var file = File.new()
-	file.open(PLAYERS_SAVE_FILE, File.WRITE)
+	file.open(SAVE_PATH, File.WRITE)
 
 	var to_save = players_data.duplicate(true)
 	for player_id in to_save.keys():
@@ -68,8 +68,8 @@ func save_player_data(id_or_node, new_player_data):
 
 func _ready() -> void:
 	var save_dir = Directory.new()
-	if not save_dir.dir_exists("res://saves/"):
-		save_dir.make_dir("res://saves/")
+	if not save_dir.dir_exists("user://saves/"):
+		save_dir.make_dir("user://saves/")
 	load_players_data()
 
 func increase_user_xp(bot: DiscordBot, messageorchannelid, player_id: String, xp_amount: int):
