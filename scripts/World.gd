@@ -21,20 +21,15 @@ var interaction_mutex = Mutex.new()
 
 # Specifies the wait_time for the cached interaction before the buttons are removed
 var wait_times = {
-	"games": 60,
-	"confirm_delete": 60,
-	"setup_char": 60,
+	"games": 180,
+	"confirm_delete": 180,
+	"setup_char": 180,
 }
 
 func take_screenshot(scene) -> PoolByteArray:
 	return yield(screenshotter.take_screenshot(scene), "completed")
 
 func _ready() -> void:
-	#var file = File.new()
-	#file.open("res://token.secret", File.READ)
-	#var token = file.get_as_text()
-	#file.close()
-
 	var bot = $DiscordBot
 	var token = AppData.app_data.token
 	if token == "":
@@ -72,8 +67,8 @@ func _load_commands(bot: DiscordBot) -> void:
 		var file = dir.get_next()
 		if file == "": # End of files
 			break
-		elif not file.begins_with(".") and file.ends_with(".gd"): # Checks for . and ..
-			var script = load("res://cmds/" + file).new()
+		elif not file.begins_with(".") and (file.ends_with(".gd") or file.ends_with(".gdc")):
+			var script = load("res://cmds/" + file.get_basename() + ".gd").new()
 			var meta = script.help
 
 			# Ensure that the cmds don't have the default help values
@@ -99,7 +94,7 @@ func _on_message_create(bot: DiscordBot, message: Message, channel: Dictionary) 
 	if message.author.bot or not message.content.begins_with(prefix):
 		return
 
-	var raw_content = message.content.lstrip(prefix)
+	var raw_content = message.content.trim_prefix(prefix)
 	var tokens = []
 	var r = RegEx.new()
 	r.compile("\\S+") # Negated whitespace character class
@@ -154,6 +149,7 @@ func _on_interaction_create(bot: DiscordBot, interaction: DiscordInteraction) ->
 		emit_signal("interaction_create", self, bot, interaction, interactions[msg_id])
 
 func _on_interaction_clock():
+	interaction_mutex.lock()
 	for msg_id in interactions:
 		var data = interactions[msg_id]
 		var elapsed_s = (OS.get_ticks_msec() - data.last_time) / 1000.0
@@ -170,6 +166,7 @@ func _on_interaction_clock():
 			"setup_char":
 				_setup_char_timeout(msg_id)
 				continue
+	interaction_mutex.unlock()
 
 func _on_save_clock():
 	PlayersData.save_players_data()

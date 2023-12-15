@@ -62,9 +62,9 @@ func on_interaction_create(world, bot: DiscordBot, interaction: DiscordInteracti
 		interaction.message.embeds[0]["description"] = "Character deletion was cancelled."
 
 	interaction.update({
-			"embeds": interaction.message.embeds,
-			"components": []
-		})
+		"embeds": interaction.message.embeds,
+		"components": []
+	})
 	world.interactions.erase(msg_id)
 	return
 

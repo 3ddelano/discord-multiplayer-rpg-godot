@@ -36,7 +36,7 @@ func on_interaction_create(world, bot: DiscordBot, interaction: DiscordInteracti
 	var msg_id = interaction.message.id
 	var custom_id = interaction.data.custom_id
 
-	# If its not a valid confirm_delete interaction, we return
+	# If its not a valid setup interaction, we return
 	if not data.type == "setup_char":
 		return
 

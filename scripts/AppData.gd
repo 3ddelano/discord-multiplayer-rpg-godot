@@ -21,7 +21,6 @@ func save_app_data():
 	var file = File.new()
 	file.open(SAVE_PATH, File.WRITE)
 
-	var to_save = app_data.duplicate(true)
 	file.store_var(app_data)
 	file.close()
 
