@@ -98,5 +98,5 @@ func _to_dict() -> Dictionary:
 			'label': label,
 			'custom_id': custom_id,
 			'disabled': disabled,
-			'emoji': emoji
+#			'emoji': emoji
 		}
